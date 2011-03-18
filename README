@@ -7,7 +7,10 @@ XTA (eXtending Tank Auth).
 This small project is based on CodeIgniter framework available
 at http://www.codeigniter.com with the original authentication 
 system called Tank Auth created by Ilya Konyukhov, which is
-available at http://www.konyukhov.com/soft/tank_auth/ 
+available at http://www.konyukhov.com/soft/tank_auth/. In order
+to also integrate with Facebook connect, I have used a Facebook
+library from kentislearningcodeigniter.com (the actual URL is
+http://kentislearningcodeigniter.com/facebook_connect/page5).
 
 The objective of XTA is to add third-party authentication mechanisms
 to Tank Auth. By third-party authentication mechanisms, I am 

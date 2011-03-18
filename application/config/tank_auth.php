@@ -140,6 +140,15 @@ $config['recaptcha_private_key'] = '';
 */
 $config['db_table_prefix'] = '';
 
+/*
+|--------------------------------------------------------------------------
+| Facebook App ID
+|
+| If you want to integrate with Facebook Connect authentication, put your
+| Facebook App ID below.
+|--------------------------------------------------------------------------
+*/
+$config['facebook_app_id'] = '';
 
 /* End of file tank_auth.php */
 /* Location: ./application/config/tank_auth.php */

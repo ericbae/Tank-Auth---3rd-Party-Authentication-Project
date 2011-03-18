@@ -88,6 +88,30 @@ $captcha = array(
 			<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Register'); ?>
 		</td>
 	</tr>
+	
+	<!-- integrating with facebook! -->
+	<tr>
+		<td colspan="3">
+			<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=127529270649637&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&amp;r="+window.location.href;'></fb:login-button>
+		</td>
+	</tr>
 </table>
 <?php echo form_submit('submit', 'Let me in'); ?>
 <?php echo form_close(); ?>
+
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script type="text/javascript">
+  	FB.init({appId: "<?php echo $this->config->item('facebook_app_id', 'tank_auth'); ?>", status: true, cookie: true, xfbml: true});
+  	FB.Event.subscribe('auth.sessionChange', function(response) {
+    	if (response.session) 
+    	{
+      		// A user has logged in, and a new cookie has been saved
+			//window.location.reload(true);
+    	} 
+    	else 
+    	{
+      		// The user has logged out, and the cookie has been cleared
+    	}
+  	});
+</script>
