@@ -149,6 +149,8 @@ $config['db_table_prefix'] = '';
 |--------------------------------------------------------------------------
 */
 $config['facebook_app_id'] = '';
+$config['facebook_app_key'] = '';
+$config['facebook_app_secret'] = '';
 
 /* End of file tank_auth.php */
 /* Location: ./application/config/tank_auth.php */
