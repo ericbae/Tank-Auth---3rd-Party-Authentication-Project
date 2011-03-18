@@ -1,0 +1,26 @@
+READ ME FILE for Tank-Auth---3rd-Party-Authentication-Project
+-------------------------------------------------------------
+
+Firstly, the project name is rather mouthful. So let me call it
+XTA (eXtending Tank Auth).
+
+This small project is based on CodeIgniter framework available
+at http://www.codeigniter.com with the original authentication 
+system called Tank Auth created by Ilya Konyukhov, which is
+available at http://www.konyukhov.com/soft/tank_auth/ 
+
+The objective of XTA is to add third-party authentication mechanisms
+to Tank Auth. By third-party authentication mechanisms, I am 
+referring to
+
+* Facebook Connect via Open Graph - using your Facebook login details
+  instead of registering again via Tank Auth
+* Twitter oAuth - using your Twitter account.
+* Google FriendConnect
+
+And there are many others (e.g. OpenID).
+
+The initial version of this extension will probably include 
+Facebook only, with Twitter and Google coming on shortly.
+--------------------------------------------------------------
+ 
