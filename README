@@ -1,29 +1,44 @@
-READ ME FILE for Tank-Auth---3rd-Party-Authentication-Project
--------------------------------------------------------------
+Welcome to the Tank-Auth---3rd-Party-Authentication-Project wiki!
 
-Firstly, the project name is rather mouthful. So let me call it
-XTA (eXtending Tank Auth).
+# What is this?
+Firstly, the project name is rather mouthful. So let's abbreviate it to "XTA" for "eXtending Tank Auth". Exactly what are we extending then? For those who use CodeIgniter PHP framework, Tank Auth is an authentication library that is easy to use and serves all the necessary basic features that are required for Web authentication. While there are a number of other tools available, it is a preferred choice by many CodeIgniter users.
 
-This small project is based on CodeIgniter framework available
-at http://www.codeigniter.com with the original authentication 
-system called Tank Auth created by Ilya Konyukhov, which is
-available at http://www.konyukhov.com/soft/tank_auth/. In order
-to also integrate with Facebook connect, I have used a Facebook
-library from kentislearningcodeigniter.com (the actual URL is
-http://kentislearningcodeigniter.com/facebook_connect/page5).
+On the other hand, it is sometimes useful to let users to "register" and "login" to your site using some of their existing accounts to other services - namely, Facebook, Twitter and Google. 
 
-The objective of XTA is to add third-party authentication mechanisms
-to Tank Auth. By third-party authentication mechanisms, I am 
-referring to
+Therefore, XTA project extends Tank Auth tool to integrate these third-party authentication mechanisms, so you can use them for your website. 
 
-* Facebook Connect via Open Graph - using your Facebook login details
-  instead of registering again via Tank Auth
-* Twitter oAuth - using your Twitter account.
-* Google FriendConnect
+# Note
+- The project is at its infant steps. We will be adding more and more 3rd party tools. But initially, we will be starting off with Twitter.
+- I tried to maintain the project as "minimal" or "basic" as possible, so you can modify at your freedom.
 
-And there are many others (e.g. OpenID).
+# Tools used for XTA
+CodeIgniter 2.0.1 - http://codeigniter.com/
+Tank Auth 1.0.9 - http://www.konyukhov.com/soft/tank_auth/
+Facebook plug-in - http://kentislearningcodeigniter.com/facebook_connect/page5
 
-The initial version of this extension will probably include 
-Facebook only, with Twitter and Google coming on shortly.
---------------------------------------------------------------
- 
+# Instructions
+- Currently, we only integrated Facebook with XTA. When others are integrated, we'll modify this instruction accordingly.
+
+## Step 1
+Download XTA project, unzip. I used Eclipse IDE for this, so you'll see a ".project" file, which you can import directly as an Eclipse project. I'm sure it'll be straight-forward for others to import into their project workspace.
+
+## Step 2
+Have you registered your website as a Facebook application? Well, you need to do that. So head over to Facebook and register a Facebook application and fill in the necessary details. See here : http://developers.facebook.com/setup/
+
+## Step 3
+You need to modify "config.php" file. At the bottom of this file, there are 3 settings in regards to Facebook, which are
+
+> $config['facebook_app_id'] = '';
+> $config['facebook_app_key'] = '';
+> $config['facebook_app_secret'] = '';
+
+You'll need to fill in the above with your own Facebook app details.
+
+## Step 4
+If you don't have a database for your website yet, now is the good time to do it. For a testing purpose, I created a database called "xta". You can see this in config/database.php file. If you have your DB already, then let's move on.
+
+## Step 5
+You should see a schema.sql file inside the zip file. This file has all the queries that will generate tables that you need. Run these queries and you'll get 5 new tables. In fact, this schema file is very similar to the one that's provided by Tank Auth. The only difference is there is now a new column in "user_profiles" table called "facebook_id", into which we will insert user's facebook ID, if they login via Facebook.
+
+## Step 6
+You can upload all your files to your server now and hopefully, things will run as planned. You should go to "www.yourdomain.com/index.php/auth" then it will open up a login page and you will also see a Facebook connect button.
