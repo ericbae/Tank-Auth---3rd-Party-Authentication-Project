@@ -8,6 +8,7 @@ class auth_other extends CI_Controller
 		$this->load->model('facebook_model');
 		$this->load->model('user_model');
 		$this->load->model('tank_auth/users');
+		$this->load->library('tank_auth');
 	}
 	
 	// handle when users log in using facebook account
@@ -19,7 +20,7 @@ class auth_other extends CI_Controller
 		{
 			$this->session->set_userdata('facebook_id', $fb_user['id']);
 			$user = $this->user_model->get_user_by_facebook_id($fb_user['id']);
-			if( sizeof($user) == 0) { redirect('sn_users/fill_user_info', 'refresh'); }
+			if( sizeof($user) == 0) { redirect('auth_other/fill_user_info', 'refresh'); }
 			else
 			{
 				// simulate what happens in the tank auth
@@ -31,7 +32,7 @@ class auth_other extends CI_Controller
 				redirect('main', 'refresh');
 			}
 		}
-		else { echo 'canot find the Facebook user'; }
+		else { echo 'cannot find the Facebook user'; }
 	}
 	
 	// called when user logs in via facebook/twitter for the first time

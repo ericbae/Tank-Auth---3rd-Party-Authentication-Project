@@ -89,20 +89,16 @@ $captcha = array(
 		</td>
 	</tr>
 	
-	<!-- integrating with facebook! -->
-	<tr>
-		<td colspan="3">
-			<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=127529270649637&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&amp;r="+window.location.href;'></fb:login-button>
-		</td>
-	</tr>
 </table>
 <?php echo form_submit('submit', 'Let me in'); ?>
 <?php echo form_close(); ?>
 
+<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('facebook_app_id'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&amp;r="+window.location.href;'></fb:login-button>
+
 <div id="fb-root"></div>
 <script src="http://connect.facebook.net/en_US/all.js"></script>
 <script type="text/javascript">
-  	FB.init({appId: "<?php echo $this->config->item('facebook_app_id', 'tank_auth'); ?>", status: true, cookie: true, xfbml: true});
+  	FB.init({appId: "<?php echo $this->config->item('facebook_app_id'); ?>", status: true, cookie: true, xfbml: true});
   	FB.Event.subscribe('auth.sessionChange', function(response) {
     	if (response.session) 
     	{

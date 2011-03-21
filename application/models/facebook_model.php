@@ -2,10 +2,10 @@
 
 class facebook_model extends CI_Model
 {
-	function get_facebook_cookie() {
-  		$app_id             = $this->config->item('facebook_app_id', 'tank_auth');
-		$application_secret = $this->config->item('facebook_app_secret', 'tank_auth');
-
+	function get_facebook_cookie() 
+	{
+		$app_id = $this->config->item('facebook_app_id');
+		$application_secret = $this->config->item('facebook_app_secret');
 		if(isset($_COOKIE['fbs_' . $app_id])){
   			$args = array();
   			parse_str(trim($_COOKIE['fbs_' . $app_id], '\\"'), $args);
