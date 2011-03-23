@@ -116,7 +116,13 @@ class auth_other extends CI_Controller
 			}
 		}
 		return $password;
-	}	
+	}
+	
+	// log out user from facebook
+	function logout()
+	{
+		
+	}
 }
 
 /* End of file main.php */
