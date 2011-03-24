@@ -29,7 +29,7 @@ class auth_other extends CI_Controller
 				//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing FB
 				$this->users->update_login_info( $user[0]->id, $this->config->item('login_record_ip', 'tank_auth'), 
 												 $this->config->item('login_record_time', 'tank_auth'));
-				redirect('main', 'refresh');
+				redirect('auth', 'refresh');
 			}
 		}
 		else { echo 'cannot find the Facebook user'; }
