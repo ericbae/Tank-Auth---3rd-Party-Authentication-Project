@@ -31,6 +31,7 @@ $captcha = array(
 	'maxlength'	=> 8,
 );
 ?>
+<h1>XTA - Tank Auth + 3rd Party Authentication system demo page</h1>
 <?php echo form_open($this->uri->uri_string()); ?>
 <table>
 	<tr>
