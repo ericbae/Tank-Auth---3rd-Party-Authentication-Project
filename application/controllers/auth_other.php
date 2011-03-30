@@ -35,6 +35,52 @@ class auth_other extends CI_Controller
 		else { echo 'cannot find the Facebook user'; }
 	}
 	
+	// function to allow users to log in via twitter
+	function twitter_signin()
+	{
+		//save the authentication tokens in the session
+		$tokens['access_token'] = NULL;
+		$tokens['access_token_secret'] = NULL;
+
+		// GET THE ACCESS TOKENS
+		$oauth_tokens = $this->session->userdata('twitter_oauth_tokens');
+		if ( $oauth_tokens !== FALSE ) { $tokens = $oauth_tokens; }
+		$this->load->library('twitter');
+		$auth = $this->twitter->oauth( $this->config->item('twitter_consumer_key'), $this->config->item('twitter_consumer_key_secret'), 
+									   $tokens['access_token'], $tokens['access_token_secret']);
+
+		if ( isset($auth['access_token']) && isset($auth['access_token_secret']) )
+		{
+			// SAVE THE ACCESS TOKENS		
+			$this->session->set_userdata('twitter_oauth_tokens', $auth);
+			if ( isset($_GET['oauth_token']) )
+			{
+				$uri = $_SERVER['REQUEST_URI'];
+				$parts = explode('?', $uri);
+
+				// Now we redirect the user since we've saved their stuff!
+				header('Location: '.$parts[0]);
+				return;
+			}
+		}
+		// get the user id from twitter authentication and save to session
+		$data = $this->twitter->call('account/verify_credentials');
+		$twitter_id = $data->id;
+		$this->session->set_userdata('twitter_id', $twitter_id);	
+		
+		// now see if the user exists with the given twitter id	
+		$user = $this->user_model->get_user_by_twitter_id($twitter_id);
+		if( sizeof($user) == 0 ) { redirect('auth_other/fill_user_info', 'refresh'); }
+		else
+		{
+			// simulate what happens in the tank auth
+			$this->session->set_userdata(array(	'user_id' => $user[0]->id, 'username' => $user[0]->username,
+												'status' => ($user[0]->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED));
+			//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing twitter
+			redirect('main', 'refresh');	
+		}
+	}	
+	
 	// called when user logs in via facebook/twitter for the first time
 	function fill_user_info()
 	{
@@ -47,11 +93,11 @@ class auth_other extends CI_Controller
 		// Run the validation
 		if ($this->form_validation->run() == false ) 
 		{
-			$fb_user = $this->facebook_model->getUser();
-			if( isset($fb_user))
-			{
+			//$fb_user = $this->facebook_model->getUser();
+			//if( isset($fb_user))
+			//{
 				$this->load->view('auth_other/fill_user_info');
-			} 
+			//} 
 		}
 		else
 		{
@@ -70,6 +116,11 @@ class auth_other extends CI_Controller
 			{ 
 				$facebook_id = $this->session->userdata('facebook_id');
 				$this->user_model->update_facebook_user_profile($user_id, $facebook_id);
+			}
+			else if( $this->session->userdata('twitter_id'))
+			{
+				$twitter_id = $this->session->userdata('twitter_id');
+				$this->user_model->update_twitter_user_profile($user_id, $twitter_id);
 			}
 									
 			// let the user login via tank auth
