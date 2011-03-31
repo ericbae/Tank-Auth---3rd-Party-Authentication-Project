@@ -38,6 +38,59 @@ class auth_other extends CI_Controller
 	// function to allow users to log in via twitter
 	function twitter_signin()
 	{
+		// It really is best to auto-load this library!
+		$this->load->library('tweet');
+		
+		// Enabling debug will show you any errors in the calls you're making, e.g:
+		$this->tweet->enable_debug(TRUE);
+		
+		// If you already have a token saved for your user
+		// (In a db for example) - See line #37
+		// 
+		// You can set these tokens before calling logged_in to try using the existing tokens.
+		// $tokens = array('oauth_token' => 'foo', 'oauth_token_secret' => 'bar');
+		// $this->tweet->set_tokens($tokens);
+		if ( !$this->tweet->logged_in() )
+		{
+			// This is where the url will go to after auth.
+			// ( Callback url )
+			
+			$this->tweet->set_callback(site_url('auth_other/twitter_signin'));
+			
+			// Send the user off for login!
+			$this->tweet->login();
+		}
+		else
+		{
+			// You can get the tokens for the active logged in user:
+			// $tokens = $this->tweet->get_tokens();
+			
+			// 
+			// These can be saved in a db alongside a user record
+			// if you already have your own auth system.
+			
+			// get the user id from twitter authentication and save to session
+			$user = $this->tweet->call('get', 'account/verify_credentials');
+			$twitter_id = $user->id;
+			$this->session->set_userdata('twitter_id', $twitter_id);	
+			
+			// now see if the user exists with the given twitter id	
+			$user = $this->user_model->get_user_by_twitter_id($twitter_id);
+			if( sizeof($user) == 0 ) { redirect('auth_other/fill_user_info', 'refresh'); }
+			else
+			{
+				// simulate what happens in the tank auth
+				$this->session->set_userdata(array(	'user_id' => $user[0]->id, 'username' => $user[0]->username,
+													'status' => ($user[0]->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED));
+				//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing twitter
+				redirect('main', 'refresh');	
+			}			
+		}		
+	}
+	
+	// function to allow users to log in via twitter
+	/*function twitter_signin()
+	{
 		//save the authentication tokens in the session
 		$tokens['access_token'] = NULL;
 		$tokens['access_token_secret'] = NULL;
@@ -79,7 +132,7 @@ class auth_other extends CI_Controller
 			//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing twitter
 			redirect('main', 'refresh');	
 		}
-	}	
+	}*/
 	
 	// called when user logs in via facebook/twitter for the first time
 	function fill_user_info()

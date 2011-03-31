@@ -377,8 +377,8 @@ $config['facebook_app_secret'] = '';
 | Twitter app details below.
 |--------------------------------------------------------------------------
 */
-$config['twitter_consumer_key'] = '';
-$config['twitter_consumer_key_secret'] = '';
+$config['twitter_consumer_key'] = 'Y2RgQpcMfMs7mFYt3IWIZg';
+$config['twitter_consumer_key_secret'] = '1MISMOaePrxq6dEj1fYr0IYH0ESQPC8wOFCJYzRDuEw';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

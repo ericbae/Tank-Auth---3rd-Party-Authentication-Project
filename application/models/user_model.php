@@ -11,6 +11,16 @@ class user_model extends CI_Model
 								  "WHERE facebook_id='$facebook_id'");		
 		return $query->result();
 	}
+	
+	// for finding user via twitter id
+	function get_user_by_twitter_id($twitter_id)
+	{
+		$query = $this->db->query("SELECT users.*, user_profiles.twitter_id " .
+								  "FROM users " .
+								  "JOIN user_profiles ON users.id=user_profiles.user_id " .
+								  "WHERE twitter_id='$twitter_id'");		
+		return $query->result();
+	}	
 
 	// Returns user by its email
 	function get_user_by_email($email)
@@ -19,11 +29,17 @@ class user_model extends CI_Model
 		return $query->result();
 	}
 	
-	// update user profile
+	// update user profile with facebook id
 	function update_facebook_user_profile($user_id, $facebook_id)
 	{
 		$query = $this->db->query("UPDATE user_profiles SET facebook_id='$facebook_id' WHERE user_id='$user_id'");
 	}
+	
+	// update user profile with twitter id
+	function update_twitter_user_profile($user_id, $twitter_id)
+	{
+		$query = $this->db->query("UPDATE user_profiles SET twitter_id='$twitter_id' WHERE user_id='$user_id'");
+	}	
 
 	// return the user given the id
 	function get_user($user_id)
