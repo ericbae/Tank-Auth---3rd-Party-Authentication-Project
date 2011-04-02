@@ -39,7 +39,7 @@ class auth_other extends CI_Controller
 	function twitter_signin()
 	{
 		// It really is best to auto-load this library!
-		$this->load->library('tweet');
+		//$this->load->library('tweet'); // automatically loaded in the autoload!
 		
 		// Enabling debug will show you any errors in the calls you're making, e.g:
 		$this->tweet->enable_debug(TRUE);
@@ -146,11 +146,7 @@ class auth_other extends CI_Controller
 		// Run the validation
 		if ($this->form_validation->run() == false ) 
 		{
-			//$fb_user = $this->facebook_model->getUser();
-			//if( isset($fb_user))
-			//{
-				$this->load->view('auth_other/fill_user_info');
-			//} 
+			$this->load->view('auth_other/fill_user_info'); 
 		}
 		else
 		{
@@ -220,12 +216,6 @@ class auth_other extends CI_Controller
 			}
 		}
 		return $password;
-	}
-	
-	// log out user from facebook
-	function logout()
-	{
-		
 	}
 }
 

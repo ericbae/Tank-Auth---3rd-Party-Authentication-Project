@@ -293,10 +293,10 @@
 			parent::__construct();
 			
 			$this->_obj =& get_instance();
-			$this->_obj->load->config('tweet');
-			$this->_obj->load->library('session');
+			//$this->_obj->load->config('tweet'); // this is now in config file for easy access
+			//$this->_obj->load->library('session'); // we already loaded this for tank auth!
 			$this->_obj->load->library('unit_test');
-			$this->_obj->load->helper('url');
+			//$this->_obj->load->helper('url'); // this is also loaded already!
 			
 			$this->_tokens =	array(
 									'consumer_key' 		=> $this->_obj->config->item('tweet_consumer_key'),

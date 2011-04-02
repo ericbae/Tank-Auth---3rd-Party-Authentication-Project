@@ -15,17 +15,21 @@ Therefore, XTA project extends Tank Auth tool to integrate these third-party aut
 CodeIgniter 2.0.1 - http://codeigniter.com/
 Tank Auth 1.0.9 - http://www.konyukhov.com/soft/tank_auth/
 Facebook plug-in - http://kentislearningcodeigniter.com/facebook_connect/page5
+Twitter plug-in - http://www.haughin.com/code/twitter/
 
 # Instructions
-- Currently, we only integrated Facebook with XTA. When others are integrated, we'll modify this instruction accordingly.
+- Currently, XTA is integrated with Facebook and Twitter. When others are integrated, we'll modify this instruction accordingly.
 
 ## Step 1
 Download XTA project, unzip. I used Eclipse IDE for this, so you'll see a ".project" file, which you can import directly as an Eclipse project. I'm sure it'll be straight-forward for others to import into their project workspace.
 
-## Step 2
+## Step 2 - Setting up 3rd party authentication plug-ins
+We will be setting up Facebook and Twitter below.
+
+### Step 2.1 - Setting for for Facebook
 Have you registered your website as a Facebook application? Well, you need to do that. So head over to Facebook and register a Facebook application and fill in the necessary details. See here : http://developers.facebook.com/setup/
 
-## Step 3
+### Step 2.2
 You need to modify "config.php" file. At the bottom of this file, there are 3 settings in regards to Facebook, which are
 
 > $config['facebook_app_id'] = '';
@@ -34,11 +38,34 @@ You need to modify "config.php" file. At the bottom of this file, there are 3 se
 
 You'll need to fill in the above with your own Facebook app details.
 
-## Step 4
+### Step 2.3 - Setting up Twitter
+I'm assuming you already have a Twitter account. Otherwise, you should. Register yourself with a new Twitter account at http://www.twitter.com. Once you have your account, you can register a new Twitter application at https://dev.twitter.com/apps. Following list shows you what you should fill in when you register a new Twitter application.
+
+Application Website : This is the website that will be using the Twitter authentication. In my demo app for XTA, it is "http://www.naturish.com"
+
+Application Type : Browser
+
+Callback URL : This is configurable at the app level, meaning that you can set this up when you plug in Twitter with Tank Auth. So you don't need to worry about it too much. I just set it up same as application website.
+
+Default Access Type : Let's set it as "Read & Write". It just gives you more power to do things. 
+
+### Step 2.4
+Once you set that up, make sure you grab your "consumer key" and "consumer secret" and put them in the config.php file of your CodeIgniter project as below.
+
+$config['twitter_consumer_key'] = '';
+$config['twitter_consumer_key_secret'] = '';
+
+That should be about all the configurations we need.
+
+## Step 3
 If you don't have a database for your website yet, now is the good time to do it. For a testing purpose, I created a database called "xta". You can see this in config/database.php file. If you have your DB already, then let's move on.
 
-## Step 5
-You should see a schema.sql file inside the zip file. This file has all the queries that will generate tables that you need. Run these queries and you'll get 5 new tables. In fact, this schema file is very similar to the one that's provided by Tank Auth. The only difference is there is now a new column in "user_profiles" table called "facebook_id", into which we will insert user's facebook ID, if they login via Facebook.
+## Step 4
+You should see a schema.sql file inside the zip file. This file has all the queries that will generate tables that you need. Run these queries and you'll get 5 new tables. In fact, this schema file is very similar to the one that's provided by Tank Auth. 
 
-## Step 6
-You can upload all your files to your server now and hopefully, things will run as planned. You should go to "www.yourdomain.com/index.php/auth" then it will open up a login page and you will also see a Facebook connect button.
+The only difference is there are now new columns in "user_profiles" table called "facebook_id" and "twitter_id" into which we will insert user's Facebook or Twitter ID, depending on which plug-in they use. 
+
+## Step 5
+You can upload all your files to your server now and hopefully, things will run as planned. You should go to "www.yourdomain.com/index.php/auth" then it will open up a login page and you will also see a Facebook connect button and Twitter login button. 
+
+## There is a sample demo application available at http://www.naturish.com
