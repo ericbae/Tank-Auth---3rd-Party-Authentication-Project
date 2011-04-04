@@ -43,9 +43,8 @@ $captcha = array(
 			  site: '00203339208551798957',
 			  onload: function(securityToken) { initAllData(); }
 			});
-		</script>
 		
-		<script type="text/javascript">
+			// main initialization function for google friend connect
 			function initAllData() 
 			{
 				var req = opensocial.newDataRequest();
@@ -59,13 +58,14 @@ $captcha = array(
 			  	req.send(onData);
 			};
 			
+			// main function for handling user data
 			function onData(data) 
 			{
 			  	if (!data.get("owner_data").hadError()) 
 			  	{
 			    	var owner_data = data.get("owner_data").getData();
 			    	document.getElementById("site-name").innerHTML = owner_data.getDisplayName();
-			    	alert('hi1');
+			    	//alert('user is logging in');
 			  	}
 			
 			  	var viewer_info = document.getElementById("viewer-info");
@@ -74,7 +74,7 @@ $captcha = array(
 			    	google.friendconnect.renderSignInButton({ 'id': 'gfc-button', 'text':'Click here to join', 'style': 'long' });
 			    	document.getElementById('gfc-button').style.display = 'block';
 			    	viewer_info.innerHTML = '';
-			    	alert('hi2');
+			    	//alert('there has been an error here');
 			  	} 
 			  	else 
 			  	{
@@ -84,7 +84,7 @@ $captcha = array(
 			        						"<a href='#' onclick='google.friendconnect.requestSettings()'>Settings</a> | " +
 									        "<a href='#' onclick='google.friendconnect.requestInvite()'>Invite</a> | " +
 									        "<a href='#' onclick='google.friendconnect.requestSignOut()'>Sign out</a>";
-					alert('hi3');
+					//alert('user has been loaded');
 			  	}
 			
 			  	if (!data.get("site_friends").hadError()) 
@@ -165,11 +165,17 @@ $captcha = array(
 		<?php echo form_submit('submit', 'Let me in'); ?>
 		<?php echo form_close(); ?>
 		
-		<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('facebook_app_id'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&amp;r="+window.location.href;'></fb:login-button>
-		<a class="twitter" href="<?php echo site_url('auth_other/twitter_signin'); ?>">
-			<img style="margin-top:5px;" src="<?php echo base_url(); ?>images/twitter_login_button.gif" alt="twitter login" />
-		</a>
-		<div id="gfc-button"></div>
+		<div class="auth_button">
+			<fb:login-button v="2" perms="" length="long" onlogin='window.location="https://graph.facebook.com/oauth/authorize?client_id=<?php echo $this->config->item('facebook_app_id'); ?>&redirect_uri=<?php echo site_url('auth_other/fb_signin'); ?>&amp;r="+window.location.href;'></fb:login-button>
+		</div>
+		
+		<div class="auth_button" style="margin-top:10px">
+			<a class="twitter" href="<?php echo site_url('auth_other/twitter_signin'); ?>">
+				<img style="margin-top:5px;" src="<?php echo base_url(); ?>images/twitter_login_button.gif" alt="twitter login" border="0"/>
+			</a>
+		</div>
+		
+		<div id="gfc-button" style="margin-top:10px"></div>
 		
 		<p>The name of this site is <strong><span id="site-name"></span></p>
 		<p id="viewer-info"></p>
