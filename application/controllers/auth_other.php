@@ -20,7 +20,10 @@ class auth_other extends CI_Controller
 		{
 			$this->session->set_userdata('facebook_id', $fb_user['id']);
 			$user = $this->user_model->get_user_by_facebook_id($fb_user['id']);
-			if( sizeof($user) == 0) { redirect('auth_other/fill_user_info', 'refresh'); }
+			if( sizeof($user) == 0) 
+			{ 
+				redirect('auth_other/fill_user_info', 'refresh'); 
+			}
 			else
 			{
 				// simulate what happens in the tank auth
@@ -32,7 +35,10 @@ class auth_other extends CI_Controller
 				redirect('auth', 'refresh');
 			}
 		}
-		else { echo 'cannot find the Facebook user'; }
+		else 
+		{ 
+			echo 'cannot find the Facebook user'; 
+		}
 	}
 	
 	// function to allow users to log in via twitter
@@ -76,7 +82,10 @@ class auth_other extends CI_Controller
 			
 			// now see if the user exists with the given twitter id	
 			$user = $this->user_model->get_user_by_twitter_id($twitter_id);
-			if( sizeof($user) == 0 ) { redirect('auth_other/fill_user_info', 'refresh'); }
+			if( sizeof($user) == 0 ) 
+			{ 
+				redirect('auth_other/fill_user_info', 'refresh'); 
+			}
 			else
 			{
 				// simulate what happens in the tank auth
@@ -88,51 +97,35 @@ class auth_other extends CI_Controller
 		}		
 	}
 	
-	// function to allow users to log in via twitter
-	/*function twitter_signin()
+	// handle when users log in using google friend connect
+	function gfc_signin()
 	{
-		//save the authentication tokens in the session
-		$tokens['access_token'] = NULL;
-		$tokens['access_token_secret'] = NULL;
-
-		// GET THE ACCESS TOKENS
-		$oauth_tokens = $this->session->userdata('twitter_oauth_tokens');
-		if ( $oauth_tokens !== FALSE ) { $tokens = $oauth_tokens; }
-		$this->load->library('twitter');
-		$auth = $this->twitter->oauth( $this->config->item('twitter_consumer_key'), $this->config->item('twitter_consumer_key_secret'), 
-									   $tokens['access_token'], $tokens['access_token_secret']);
-
-		if ( isset($auth['access_token']) && isset($auth['access_token_secret']) )
+		// we passed the user id in the URL, let's get it!
+		$gfc_id = $this->uri->segment(3);
+		if( !is_null($gfc_id))
 		{
-			// SAVE THE ACCESS TOKENS		
-			$this->session->set_userdata('twitter_oauth_tokens', $auth);
-			if ( isset($_GET['oauth_token']) )
+			$this->session->set_userdata('gfc_id', $gfc_id);
+			$user = $this->user_model->get_user_by_gfc_id($gfc_id);
+			if( sizeof($user) == 0) 
+			{ 
+				redirect('auth_other/fill_user_info', 'refresh'); 
+			}
+			else
 			{
-				$uri = $_SERVER['REQUEST_URI'];
-				$parts = explode('?', $uri);
-
-				// Now we redirect the user since we've saved their stuff!
-				header('Location: '.$parts[0]);
-				return;
+				// simulate what happens in the tank auth
+				$this->session->set_userdata(array(	'user_id' => $user[0]->id, 'username' => $user[0]->username,
+													'status' => ($user[0]->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED));
+				//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing FB
+				$this->users->update_login_info( $user[0]->id, $this->config->item('login_record_ip', 'tank_auth'), 
+												 $this->config->item('login_record_time', 'tank_auth'));
+				redirect('auth', 'refresh');
 			}
 		}
-		// get the user id from twitter authentication and save to session
-		$data = $this->twitter->call('account/verify_credentials');
-		$twitter_id = $data->id;
-		$this->session->set_userdata('twitter_id', $twitter_id);	
-		
-		// now see if the user exists with the given twitter id	
-		$user = $this->user_model->get_user_by_twitter_id($twitter_id);
-		if( sizeof($user) == 0 ) { redirect('auth_other/fill_user_info', 'refresh'); }
-		else
-		{
-			// simulate what happens in the tank auth
-			$this->session->set_userdata(array(	'user_id' => $user[0]->id, 'username' => $user[0]->username,
-												'status' => ($user[0]->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED));
-			//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing twitter
-			redirect('main', 'refresh');	
+		else 
+		{ 
+			echo 'cannot find the Google Friend Connect ID!'; 
 		}
-	}*/
+	}
 	
 	// called when user logs in via facebook/twitter for the first time
 	function fill_user_info()
@@ -163,13 +156,15 @@ class auth_other extends CI_Controller
 			$user_id = $new_user[0]->id;
 			if( $this->session->userdata('facebook_id')) 
 			{ 
-				$facebook_id = $this->session->userdata('facebook_id');
-				$this->user_model->update_facebook_user_profile($user_id, $facebook_id);
+				$this->user_model->update_facebook_user_profile($user_id, $this->session->userdata('facebook_id'));
 			}
 			else if( $this->session->userdata('twitter_id'))
 			{
-				$twitter_id = $this->session->userdata('twitter_id');
-				$this->user_model->update_twitter_user_profile($user_id, $twitter_id);
+				$this->user_model->update_twitter_user_profile($user_id, $this->session->userdata('twitter_id'));
+			}
+			else if( $this->session->userdata('gfc_id'))
+			{
+				$this->user_model->update_gfc_user_profile($user_id, $this->session->userdata('gfc_id'));
 			}
 									
 			// let the user login via tank auth

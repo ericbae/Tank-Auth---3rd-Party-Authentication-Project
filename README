@@ -8,7 +8,7 @@ On the other hand, it is sometimes useful to let users to "register" and "login"
 Therefore, XTA project extends Tank Auth tool to integrate these third-party authentication mechanisms, so you can use them for your website. 
 
 # Note
-- The project is at its infant steps. We will be adding more and more 3rd party tools. But initially, we will be starting off with Twitter.
+- The XTA project is currently supporting Facebook, Twitter and Google Friend Connect (GFC). In turn, GFC itself allows you to use your Yahoo, AOL or OpenID accounts as well. There might be a few more incremental changes in the future depending on how these third party systems changes. Or even maybe implementing LinkedIn or Yahoo directly.
 - I tried to maintain the project as "minimal" or "basic" as possible, so you can modify at your freedom.
 
 # Tools used for XTA
@@ -57,15 +57,29 @@ $config['twitter_consumer_key_secret'] = '';
 
 That should be about all the configurations we need.
 
+### Step 2.5 - Setting up Google Friend Connect (GFC)
+You must first register your website with GFC at 
+
+http://www.google.com/friendconnect/
+
+Follow the instructions provided on the site to register your site and make sure you grab your application ID.
+
+### Steo 2.6
+Once you have your ID, then open up config.php file and fill in the following config variable.
+
+$config['google_app_id'] = '';
+
+You are now good to go with Google Friend Connect!
+
 ## Step 3
 If you don't have a database for your website yet, now is the good time to do it. For a testing purpose, I created a database called "xta". You can see this in config/database.php file. If you have your DB already, then let's move on.
 
 ## Step 4
 You should see a schema.sql file inside the zip file. This file has all the queries that will generate tables that you need. Run these queries and you'll get 5 new tables. In fact, this schema file is very similar to the one that's provided by Tank Auth. 
 
-The only difference is there are now new columns in "user_profiles" table called "facebook_id" and "twitter_id" into which we will insert user's Facebook or Twitter ID, depending on which plug-in they use. 
+The only difference is there are now new columns in "user_profiles" table called "facebook_id", "twitter_id" and "gfc_id" into which we will insert user's Facebook, Twitter or Google ID, depending on which plug-in they use. 
 
 ## Step 5
-You can upload all your files to your server now and hopefully, things will run as planned. You should go to "www.yourdomain.com/index.php/auth" then it will open up a login page and you will also see a Facebook connect button and Twitter login button. 
+You can upload all your files to your server now and hopefully, things will run as planned. You should go to "www.yourdomain.com/index.php/auth" then it will open up a login page and you will also see a Facebook connect, Twitter login and Google Friend Connect buttons. 
 
 ## There is a sample demo application available at http://www.naturish.com

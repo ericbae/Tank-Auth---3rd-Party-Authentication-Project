@@ -380,5 +380,15 @@ $config['facebook_app_secret'] = '';
 $config['twitter_consumer_key'] = '';
 $config['twitter_consumer_key_secret'] = '';
 
+/*
+|--------------------------------------------------------------------------
+| Twitter App ID
+|
+| If you want to integrate with Twitter oAuth authentication, put your
+| Twitter app details below.
+|--------------------------------------------------------------------------
+*/
+$config['google_app_id'] = '';
+
 /* End of file config.php */
 /* Location: ./application/config/config.php */
