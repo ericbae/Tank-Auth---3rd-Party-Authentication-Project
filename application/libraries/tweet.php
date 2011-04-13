@@ -191,15 +191,14 @@
 			do
 			{
 				$response = curl_multi_exec($this->_mch, $running_curl);
-				
 				if ( $running !== NULL && $running_curl != $running )
 				{
 					$this->_setResponse($key);
 					
 					if ( isset($this->_responses[$key]) )
 					{
-						$response = new tweetResponseOauth( (object) $this->_responses[$key] );
 						
+						$response = new tweetResponseOauth( (object) $this->_responses[$key] );
 						if ( $response->__resp->code !== 200 )
 						{
 							throw new tweetException($response->__resp->code.' | Request Failed: '.$response->__resp->data->request.' - '.$response->__resp->data->error);

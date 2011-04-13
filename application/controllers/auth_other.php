@@ -92,7 +92,7 @@ class auth_other extends CI_Controller
 				$this->session->set_userdata(array(	'user_id' => $user[0]->id, 'username' => $user[0]->username,
 													'status' => ($user[0]->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED));
 				//$this->tank_auth->clear_login_attempts($user[0]->email); can't run this when doing twitter
-				redirect('main', 'refresh');	
+				redirect('auth', 'refresh');	
 			}			
 		}		
 	}
