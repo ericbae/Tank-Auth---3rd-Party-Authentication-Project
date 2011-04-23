@@ -104,7 +104,7 @@ class Auth extends CI_Controller
 	function logout()
 	{
 		$this->tank_auth->logout();
-
+		$this->session->set_userdata(array('twitter_id' => '', 'facebook_id' => ''));
 		$this->_show_message($this->lang->line('auth_message_logged_out'));
 	}
 
